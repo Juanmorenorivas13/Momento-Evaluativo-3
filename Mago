@@ -1,0 +1,12 @@
+public class Mago extends Personaje {
+    public Mago(String nombre) {
+        super(nombre);
+    }
+
+    @Override
+    public void atacar(Personaje oponente) {
+        int dano = (int) (Math.random() * 21) + 10; // Entre 10 y 30
+        System.out.println("✨ El mago " + this.nombre + " lanza un hechizo mágico!");
+        oponente.recibirDano(dano);
+    }
+}
