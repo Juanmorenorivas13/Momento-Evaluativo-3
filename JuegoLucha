@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+// Clase principal que controla el flujo del juego
+public class JuegoLucha {
+    private Personaje jugador1;
+    private Personaje jugador2;
+
+    // Constructor que recibe dos personajes
+    public JuegoLucha(Personaje jugador1, Personaje jugador2) {
+        this.jugador1 = jugador1;
+        this.jugador2 = jugador2;
+    }
+
+    // Método que inicia la pelea por turnos
+    public void iniciarPelea() {
+        System.out.println("LA PELEA COMIENZA ENTRE " + jugador1.getNombre() + " Y " + jugador2.getNombre());
+
+        while (jugador1.estaVivo() && jugador2.estaVivo()) {
+            turno(jugador1, jugador2);
+
+            if (jugador2.estaVivo()) {
+                turno(jugador2, jugador1);
+            }
+        }
+
+        if (jugador1.estaVivo()) {
+            System.out.println(jugador1.getNombre() + " HA GANADO LA PELEA.");
+        } else {
+            System.out.println(jugador2.getNombre() + " HA GANADO LA PELEA.");
+        }
+    }
+
+    // Método que representa un turno de ataque
+    private void turno(Personaje atacante, Personaje defensor) {
+        System.out.println("TURNO DE " + atacante.getNombre() + " | HP de " + defensor.getNombre() + ": " + defensor.getPuntosDeVida());
+        atacante.atacar(defensor);
+        System.out.println(defensor.getNombre() + " ahora tiene " + defensor.getPuntosDeVida() + " puntos de vida.");
+    }
+
+    // Método main que permite al usuario crear los personajes y empezar la pelea
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Jugador 1
+        System.out.print("Introduce el nombre del jugador 1: ");
+        String nombre1 = scanner.nextLine();
+        System.out.print("Selecciona el tipo de personaje (guerrero o mago): ");
+        String tipo1 = scanner.nextLine().toLowerCase();
+        Personaje jugador1 = tipo1.equals("mago") ? new Mago(nombre1) : new Guerrero(nombre1);
+
+        // Jugador 2
+        System.out.print("Introduce el nombre del jugador 2: ");
+        String nombre2 = scanner.nextLine();
+        System.out.print("Selecciona el tipo de personaje (guerrero o mago): ");
+        String tipo2 = scanner.nextLine().toLowerCase();
+        Personaje jugador2 = tipo2.equals("mago") ? new Mago(nombre2) : new Guerrero(nombre2);
+
+        // Iniciar el juego
+        JuegoLucha juego = new JuegoLucha(jugador1, jugador2);
+        juego.iniciarPelea();
+
+        scanner.close();
+    }
+}
+
+
